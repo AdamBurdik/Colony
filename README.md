@@ -8,4 +8,5 @@ Colony is a top-down pixel art game about managing your colony and defending it 
 
 ### 0.3.1-Alpha
 > Moved network from sockets to [kryonet](https://github.com/EsotericSoftware/kryonet)
+
 > Added basic tile building system
