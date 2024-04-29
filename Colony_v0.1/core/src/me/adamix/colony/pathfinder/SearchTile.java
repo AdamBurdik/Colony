@@ -1,8 +1,6 @@
-package me.adamix.pf.pathfinder;
+package me.adamix.colony.pathfinder;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import me.adamix.pf.Game;
+import me.adamix.colony.math.Vector2;
 
 public class SearchTile {
 

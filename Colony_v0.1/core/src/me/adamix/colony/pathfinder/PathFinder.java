@@ -1,17 +1,18 @@
-package me.adamix.pf.pathfinder;
+package me.adamix.colony.pathfinder;
 
-import com.badlogic.gdx.math.Vector2;
-import me.adamix.pf.Game;
-import me.adamix.pf.Tile;
+import me.adamix.colony.Game;
+import me.adamix.colony.math.Vector2;
+import me.adamix.colony.world.Overworld;
+import me.adamix.colony.world.tile.Tile;
 
 import java.util.*;
 
 public class PathFinder {
 
-	private static final long maxDistance = 100_000L;
+	private static final long maxDistance = 100_000_000L;
 	private static final boolean diagonal = false;
 
-	public static List<Vector2> startSearch(Vector2 startTilePos, Vector2 endTilePos) {
+	public static Queue<Vector2> startSearch(Vector2 startTilePos, Vector2 endTilePos) {
 
 		Map<Vector2, SearchTile> searchedTiles = new HashMap<>();
 		Map<Vector2, SearchTile> exploredTiles = new HashMap<>();
@@ -23,9 +24,10 @@ public class PathFinder {
 				new SearchTile(endTilePos, 0, 0, null)
 		);
 
-		while (!isFound) {
+		while (!isFound && !searchedTiles.isEmpty()) {
 			distance++;
 			if (distance > maxDistance) {
+				System.out.println("Max distance");
 				return null;
 			}
 
@@ -37,7 +39,7 @@ public class PathFinder {
 
 			List<Vector2> surroundingPositions = getSurroundingPositions(lowestFCostTile.getPos());
 			for (Vector2 pos : surroundingPositions) {
-				Tile surroundingTile = Game.getTileFromGrid(pos);
+				Tile surroundingTile = Overworld.getTileFromGrid(pos);
 
 				if (surroundingTile == null) {
 					continue;
@@ -47,21 +49,21 @@ public class PathFinder {
 					continue;
 				}
 
-				if (surroundingTile.getPos() == startTilePos) {
+				if (surroundingTile.getPosition() == startTilePos) {
 					exploredTiles.put(startTilePos, new SearchTile(startTilePos, 0, 0, lowestFCostTile.getPos()));
 					isFound = true;
 					continue;
 				}
 
-				if (!searchedTiles.containsKey(surroundingTile.getPos()) && !exploredTiles.containsKey(surroundingTile.getPos())) {
+				if (!searchedTiles.containsKey(surroundingTile.getPosition()) && !exploredTiles.containsKey(surroundingTile.getPosition())) {
 					SearchTile searchTile = new SearchTile(
-							surroundingTile.getPos(),
-							lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPos()),
-							calculateDistance(surroundingTile.getPos(),startTilePos),
+							surroundingTile.getPosition(),
+							lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()),
+							calculateDistance(surroundingTile.getPosition(),startTilePos),
 							lowestFCostTile.getPos());
 					searchedTiles.put(searchTile.getPos(), searchTile);
 				} else {
-					lowestFCostTile.update(lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPos()), lowestFCostTile.getPos());
+					lowestFCostTile.update(lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()), lowestFCostTile.getPos());
 				}
 			}
 
@@ -73,8 +75,8 @@ public class PathFinder {
 		return retracePath(exploredTiles, startTilePos, endTilePos);
 	}
 
-	private static List<Vector2> retracePath(Map<Vector2, SearchTile> exploredTiles, Vector2 endTilePos, Vector2 startTilePos) {
-		List<Vector2> retracedPath = new ArrayList<>();
+	private static Queue<Vector2> retracePath(Map<Vector2, SearchTile> exploredTiles, Vector2 endTilePos, Vector2 startTilePos) {
+		Queue<Vector2> retracedPath = new LinkedList<>();
 
 		Vector2 currentTilePos = endTilePos;
 
