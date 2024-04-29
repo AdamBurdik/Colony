@@ -35,7 +35,7 @@ public class Game extends ApplicationAdapter {
 		Overworld.init(new Vector2(Gdx.graphics.getWidth() / (tileSize * scale), Gdx.graphics.getHeight() / (tileSize * scale)));
 		Overworld.generate();
 
-		int colonistCount = 10;
+		int colonistCount = 20;
 		for (int i = 0; i < colonistCount; i++) {
 
 			int randomGridX = ThreadLocalRandom.current().nextInt(0,  Overworld.getTileCount().x);
