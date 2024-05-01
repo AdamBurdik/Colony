@@ -1,8 +1,7 @@
 package me.adamix.colony.pathfinder;
 
-import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.world.Overworld;
+import me.adamix.colony.world.World;
 import me.adamix.colony.world.tile.Tile;
 
 import java.util.*;
@@ -14,65 +13,66 @@ public class PathFinder {
 
 	public static Queue<Vector2> startSearch(Vector2 startTilePos, Vector2 endTilePos) {
 
-		Map<Vector2, SearchTile> searchedTiles = new HashMap<>();
-		Map<Vector2, SearchTile> exploredTiles = new HashMap<>();
-		boolean isFound = false;
-		long distance = 0;
-
-		searchedTiles.put(
-				endTilePos,
-				new SearchTile(endTilePos, 0, 0, null)
-		);
-
-		while (!isFound && !searchedTiles.isEmpty()) {
-			distance++;
-			if (distance > maxDistance) {
-				System.out.println("Max distance");
-				return null;
-			}
-
-			SearchTile lowestFCostTile = getLowestFCostTile(searchedTiles.values());
-			if (lowestFCostTile == null) {
-				continue;
-			}
-
-
-			List<Vector2> surroundingPositions = getSurroundingPositions(lowestFCostTile.getPos());
-			for (Vector2 pos : surroundingPositions) {
-				Tile surroundingTile = Overworld.getTileFromGrid(pos);
-
-				if (surroundingTile == null) {
-					continue;
-				}
-
-				if (surroundingTile.isWall()) {
-					continue;
-				}
-
-				if (surroundingTile.getPosition() == startTilePos) {
-					exploredTiles.put(startTilePos, new SearchTile(startTilePos, 0, 0, lowestFCostTile.getPos()));
-					isFound = true;
-					continue;
-				}
-
-				if (!searchedTiles.containsKey(surroundingTile.getPosition()) && !exploredTiles.containsKey(surroundingTile.getPosition())) {
-					SearchTile searchTile = new SearchTile(
-							surroundingTile.getPosition(),
-							lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()),
-							calculateDistance(surroundingTile.getPosition(),startTilePos),
-							lowestFCostTile.getPos());
-					searchedTiles.put(searchTile.getPos(), searchTile);
-				} else {
-					lowestFCostTile.update(lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()), lowestFCostTile.getPos());
-				}
-			}
-
-			exploredTiles.put(lowestFCostTile.getPos(), lowestFCostTile);
-			searchedTiles.remove(lowestFCostTile.getPos());
-
-		}
-
-		return retracePath(exploredTiles, startTilePos, endTilePos);
+////		Map<Vector2, SearchTile> searchedTiles = new HashMap<>();
+////		Map<Vector2, SearchTile> exploredTiles = new HashMap<>();
+////		boolean isFound = false;
+////		long distance = 0;
+////
+////		searchedTiles.put(
+////				endTilePos,
+////				new SearchTile(endTilePos, 0, 0, null)
+////		);
+////
+////		while (!isFound && !searchedTiles.isEmpty()) {
+////			distance++;
+////			if (distance > maxDistance) {
+////				System.out.println("Max distance");
+////				return null;
+////			}
+////
+////			SearchTile lowestFCostTile = getLowestFCostTile(searchedTiles.values());
+////			if (lowestFCostTile == null) {
+////				continue;
+////			}
+////
+////
+////			List<Vector2> surroundingPositions = getSurroundingPositions(lowestFCostTile.getPos());
+////			for (Vector2 pos : surroundingPositions) {
+////				Tile surroundingTile = World.getTileFromGrid(pos);
+////
+////				if (surroundingTile == null) {
+////					continue;
+////				}
+////
+////				if (surroundingTile.isWall()) {
+////					continue;
+////				}
+////
+////				if (surroundingTile.getPosition() == startTilePos) {
+////					exploredTiles.put(startTilePos, new SearchTile(startTilePos, 0, 0, lowestFCostTile.getPos()));
+////					isFound = true;
+////					continue;
+////				}
+////
+////				if (!searchedTiles.containsKey(surroundingTile.getPosition()) && !exploredTiles.containsKey(surroundingTile.getPosition())) {
+////					SearchTile searchTile = new SearchTile(
+////							surroundingTile.getPosition(),
+////							lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()),
+////							calculateDistance(surroundingTile.getPosition(),startTilePos),
+////							lowestFCostTile.getPos());
+////					searchedTiles.put(searchTile.getPos(), searchTile);
+////				} else {
+////					lowestFCostTile.update(lowestFCostTile.getGCost() + calculateDistance(lowestFCostTile.getPos(), surroundingTile.getPosition()), lowestFCostTile.getPos());
+////				}
+////			}
+////
+////			exploredTiles.put(lowestFCostTile.getPos(), lowestFCostTile);
+////			searchedTiles.remove(lowestFCostTile.getPos());
+////
+////		}
+//
+//		return retracePath(exploredTiles, startTilePos, endTilePos);
+		return null;
 	}
 
 	private static Queue<Vector2> retracePath(Map<Vector2, SearchTile> exploredTiles, Vector2 endTilePos, Vector2 startTilePos) {

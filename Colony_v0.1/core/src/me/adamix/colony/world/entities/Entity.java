@@ -3,7 +3,8 @@ package me.adamix.colony.world.entities;
 import com.badlogic.gdx.graphics.Texture;
 import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.world.Overworld;
+import me.adamix.colony.preferences.Preferences;
+import me.adamix.colony.resources.Resources;
 
 public class Entity {
 
@@ -21,13 +22,13 @@ public class Entity {
 	}
 
 	public void render() {
-		Texture texture = Game.getTexture(textureId);
+		Texture texture = Resources.getTileTextures(textureId);
 		Game.batch.draw(
 				texture,
 				position.x + offset.x,
 				position.y + offset.y,
-				texture.getWidth() * Game.scale,
-				texture.getHeight() * Game.scale);
+				texture.getWidth() * Preferences.worldScale,
+				texture.getHeight() * Preferences.worldScale);
 
 	};
 
@@ -35,9 +36,9 @@ public class Entity {
 		this.position = newPosition;
 	}
 
-	public Vector2 getGridPosition() {
-		return Overworld.convertScreenToGrid(position);
-	}
+//	public Vector2 getGridPosition() {
+//		return World.convertScreenToGrid(position);
+//	}
 
 	public Vector2 getScreenPosition() {
 		return position;

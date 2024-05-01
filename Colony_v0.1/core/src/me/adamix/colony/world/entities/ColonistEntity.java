@@ -2,6 +2,7 @@ package me.adamix.colony.world.entities;
 
 import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
+import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.world.entities.ai.PathFindingEntity;
 
 
@@ -44,8 +45,8 @@ public class ColonistEntity extends PathFindingEntity {
 		Vector2 direction = getDirection(newPosition);
 
 		this.position = newPosition;
-		offset.x = -1 * direction.x * Game.tileSize * Game.scale;
-		offset.y = -1 * direction.y * Game.tileSize * Game.scale;
+		offset.x = -1 * direction.x * Preferences.worldScale * Preferences.tileSize;
+		offset.y = -1 * direction.y * Preferences.worldScale * Preferences.tileSize;
 
 	}
 }
