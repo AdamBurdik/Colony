@@ -20,6 +20,11 @@ public class Vector2 {
 		return "[x: " + x + ", y: " + y + "]";
 	}
 
+	public Vector2 add(int x, int y) {
+		return new Vector2(this.x + x, this.y + y);
+
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

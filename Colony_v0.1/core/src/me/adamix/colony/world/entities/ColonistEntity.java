@@ -39,14 +39,14 @@ public class ColonistEntity extends PathFindingEntity {
 		}
 		return direction;
 	}
-
-	@Override
-	public void move(Vector2 newPosition) {
-		Vector2 direction = getDirection(newPosition);
-
-		this.position = newPosition;
-		offset.x = -1 * direction.x * Preferences.worldScale * Preferences.tileSize;
-		offset.y = -1 * direction.y * Preferences.worldScale * Preferences.tileSize;
-
-	}
+//
+//	@Override
+//	public void move(Vector2 newPosition) {
+//		Vector2 direction = getDirection(newPosition);
+//
+//		this.position = newPosition;
+//		offset.x = -1 * direction.x * Preferences.worldScale * Preferences.tileSize;
+//		offset.y = -1 * direction.y * Preferences.worldScale * Preferences.tileSize;
+//
+//	}
 }

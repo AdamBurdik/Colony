@@ -25,4 +25,8 @@ public class Chunk {
 			tile.render();
 		}
 	}
+
+	public Tile getTileByGrid(Vector3 tileGridPos) {
+		return tileMap.get(tileGridPos);
+	}
 }

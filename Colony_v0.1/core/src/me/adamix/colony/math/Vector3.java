@@ -39,6 +39,10 @@ public class Vector3 {
 		return this.x == other.x && this.y == other.y && this.z == other.z;
 	}
 
+	public Vector3 add(int x, int y, int z) {
+		return new Vector3(this.x + x, this.y + y, this.z + z);
+	}
+
 	@Override
 	public int hashCode() {
 		return 31 * x + 17 * y;

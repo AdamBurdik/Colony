@@ -3,63 +3,51 @@ package me.adamix.colony;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Predicate;
 import com.badlogic.gdx.utils.ScreenUtils;
+import me.adamix.camera.Camera;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.world.World;
-import me.adamix.colony.world.entities.ColonistEntity;
-import me.adamix.colony.world.entities.Entity;
 import me.adamix.colony.world.generators.OverworldGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
-import static me.adamix.colony.preferences.Preferences.tileSize;
-import static me.adamix.colony.preferences.Preferences.worldScale;
-
 public class Game extends ApplicationAdapter {
-	public static SpriteBatch batch;
 	public static boolean isRunning = false;
-	private static World overWorld;
-	public static Vector2 offset = new Vector2(0, 0);
-
+	private static World currentWorld;
 	@Override
 	public void create () {
-		isRunning = true;
-		batch = new SpriteBatch();
+		Camera.create();
 		Resources.loadAllTextures();
 
-		overWorld = new World(new OverworldGenerator(69L));
+		currentWorld = new World(new OverworldGenerator(69L));
 
-		for (int y = -5; y < 5; y++) {
-			for (int x = -5; x < 5; x++) {
-				overWorld.generateChunk(new Vector2(x, y));
+		for (int y = -10; y < 10; y++) {
+			for (int x = -10; x < 10; x++) {
+				currentWorld.generateChunk(new Vector2(x, y));
 			}
 		}
+
+		isRunning = true;
 	}
 
 	private void handleInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			offset.y += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			Camera.offset.y += (int) (-1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			offset.y += (int) (1000 * Gdx.graphics.getDeltaTime());
+			Camera.offset.y += (int) (1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			offset.x += (int) (1000 * Gdx.graphics.getDeltaTime());
+			Camera.offset.x += (int) (1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			offset.x += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			Camera.offset.x += (int) (-1000 * Gdx.graphics.getDeltaTime());
 		}
 	}
 
 	private void update() {
 		handleInput();
+		Camera.update();
 		if (Preferences.showFpsInTitle) {
 			Gdx.graphics.setTitle(Preferences.windowTitle + " " + Preferences.gameVersion + "     FPS: " + Gdx.graphics.getFramesPerSecond());
 		}
@@ -69,15 +57,17 @@ public class Game extends ApplicationAdapter {
 	public void render () {
 		update();
 		ScreenUtils.clear(1, 1, 1, 1);
-		batch.begin();
-		overWorld.render();
-		batch.end();
+		Camera.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
 		isRunning = false;
+		Camera.dispose();
+	}
+
+	public static World getCurrentWorld() {
+		return currentWorld;
 	}
 
 }
