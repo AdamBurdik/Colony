@@ -21,8 +21,8 @@ public class Game extends ApplicationAdapter {
 
 		currentWorld = new World(new OverworldGenerator(69L));
 
-		for (int y = -10; y < 10; y++) {
-			for (int x = -10; x < 10; x++) {
+		for (int y = -20; y < 20; y++) {
+			for (int x = -20; x < 20; x++) {
 				currentWorld.generateChunk(new Vector2(x, y));
 			}
 		}
@@ -31,18 +31,24 @@ public class Game extends ApplicationAdapter {
 	}
 
 	private void handleInput() {
+		Vector2 move = new Vector2(0, 0);
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			Camera.offset.y += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			move.y += (int) (-1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			Camera.offset.y += (int) (1000 * Gdx.graphics.getDeltaTime());
+			move.y += (int) (1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			Camera.offset.x += (int) (1000 * Gdx.graphics.getDeltaTime());
+			move.x += (int) (1000 * Gdx.graphics.getDeltaTime());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			Camera.offset.x += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			move.x += (int) (-1000 * Gdx.graphics.getDeltaTime());
 		}
+		if (move.x != 0 && move.y != 0) {
+			move.y /= 2;
+		}
+		Camera.offset.x += move.x;
+		Camera.offset.y += move.y;
 	}
 
 	private void update() {

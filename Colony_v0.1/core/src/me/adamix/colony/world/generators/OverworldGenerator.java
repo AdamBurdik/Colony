@@ -24,7 +24,7 @@ public class OverworldGenerator implements Generator {
 	public Chunk generateChunk(Vector2 chunkGridPos) {
 		// ToDo
 		Map<Vector3, Tile> tileMap = new LinkedHashMap<>();
-		for (int z = 0; z < 3; z++) {
+		for (int z = 0; z < ThreadLocalRandom.current().nextInt(1, 4); z++) {
 			for (int y = 0; y < Preferences.chunkSize; y++) {
 				for (int x = 0; x < Preferences.chunkSize; x++) {
 					Vector3 pos = new Vector3(x, y, z);
