@@ -10,15 +10,17 @@ import me.adamix.colony.resources.Resources;
 import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.chunk.Chunk;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import static me.adamix.colony.preferences.Preferences.tileSize;
 
 public class Tile {
 
-	private final Vector3 gridPos;
+	private final TilePos gridPos;;
 	private final Vector2 chunkGridPos;
 	private int textureId;
 
-	public Tile(Vector3 gridPos, Vector2 chunkGridPos, int textureId) {
+	public Tile(TilePos gridPos, Vector2 chunkGridPos, int textureId) {
 		this.gridPos = gridPos;
 		this.chunkGridPos = chunkGridPos;
 		this.textureId = textureId;
@@ -29,22 +31,26 @@ public class Tile {
 		return chunk.getTileByGrid(gridPos.add(0, 0, 1)) == null || chunk.getTileByGrid(gridPos.add(1, 0, 0)) == null || chunk.getTileByGrid(gridPos.add(0, 1, 0)) == null;
 	}
 
-	public void render() {
+	public void render(Vector2 chunkScreenPos, Vector2 chunkSize) {
 		if (!isVisible()) {
 			return;
 		}
-		Vector2 pos = Isometric.getTileScreenPos(this.gridPos, this.chunkGridPos);
+		Vector2 pos = Isometric.getTileScreenPos(this.gridPos);
 		Vector2 screenPos = new Vector2(
-				(float) Gdx.graphics.getWidth() / 2 - pos.x - (float) Preferences.tileSize / 2 + Camera.offset.x,
-				(Gdx.graphics.getHeight() - pos.y - Preferences.tileSize) + (float) (gridPos.z * tileSize / 2) - Preferences.worldScale * gridPos.z + Camera.offset.y
+				pos.x + chunkScreenPos.x + (float) chunkSize.x / 2 - (float) tileSize / 2,
+				(Gdx.graphics.getHeight() - pos.y - Preferences.tileSize) - chunkScreenPos.y
 		);
-		if (screenPos.x > Gdx.graphics.getWidth() || screenPos.x + tileSize < 0 || screenPos.y > Gdx.graphics.getHeight() || screenPos.y + tileSize < 0) {
-			return;
-		}
+//		if (screenPos.x > Gdx.graphics.getWidth() || screenPos.x + tileSize < 0 || screenPos.y > Gdx.graphics.getHeight() || screenPos.y + tileSize < 0) {
+//			return;
+//		}
 
-		Chunk chunk = Game.getCurrentWorld().getChunkByGrid(chunkGridPos);
-		if (chunk.getTileByGrid(gridPos.add(0, 0, 1)) != null) {
-			textureId = 0;
+		// ToDo: Reimplement this function
+		// Make texture id to dirt if block above is solid
+		if (textureId != 0 && textureId != 1) {
+			Chunk chunk = Game.getCurrentWorld().getChunkByGrid(chunkGridPos);
+			if (chunk.getTileByGrid(gridPos.add(0, 0, 1)) != null) {
+				textureId = ThreadLocalRandom.current().nextInt(0, 2);
+			}
 		}
 
 		Camera.draw(

@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.math.Vector3;
 import me.adamix.colony.preferences.Preferences;
+import me.adamix.colony.world.tile.TilePos;
 
 import java.util.Map;
 
-import static me.adamix.colony.preferences.Preferences.tileSize;
-import static me.adamix.colony.preferences.Preferences.chunkSize;
+import static me.adamix.colony.preferences.Preferences.*;
 
 public class Isometric {
 	private static final float i_x = 1f;
@@ -20,6 +20,13 @@ public class Isometric {
 		return new Vector2(
 				chunkGridPos.x * i_x * ((float) tileSize * chunkSize / 2) + chunkGridPos.y * j_x * ((float) tileSize * chunkSize / 2),
 				chunkGridPos.x * i_y * ((float) tileSize * chunkSize / 2) + chunkGridPos.y * j_y * ((float) tileSize * chunkSize / 2)
+		);
+	}
+
+	public static Vector2 getChunkSize() {
+		return new Vector2(
+				tileSize + tileSize * (chunkSize - 1),
+				tileSize + tileSize / 2 * (chunkSize - 1) + ((tileSize - worldScale) / 2 * (Preferences.chunkHeight - 1))
 		);
 	}
 
@@ -48,11 +55,10 @@ public class Isometric {
 		);
 	}
 
-	public static Vector2 getTileScreenPos(Vector3 tileGridPos, Vector2 chunkGridPos) {
-		Vector2 chunkScreenPos = getChunkScreenPos(chunkGridPos);
+	public static Vector2 getTileScreenPos(TilePos tileGridPos) {
 		return new Vector2(
-				tileGridPos.x * i_x * ((float) tileSize / 2) + tileGridPos.y * j_x * ((float) tileSize / 2) + chunkScreenPos.x,
-				tileGridPos.x * i_y * ((float) tileSize / 2) + tileGridPos.y * j_y * ((float) tileSize / 2) + chunkScreenPos.y
+				tileGridPos.x * i_x * ((float) tileSize / 2) + tileGridPos.y * j_x * ((float) tileSize / 2),
+				(tileGridPos.x * i_y * ((float) tileSize / 2) + tileGridPos.y * j_y * ((float) tileSize / 2)) + Preferences.worldScale * tileGridPos.z
 		);
 	}
 

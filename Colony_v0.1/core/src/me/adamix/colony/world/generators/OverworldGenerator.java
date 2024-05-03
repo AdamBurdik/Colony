@@ -5,6 +5,7 @@ import me.adamix.colony.math.Vector3;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.tile.Tile;
+import me.adamix.colony.world.tile.TilePos;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,13 +24,13 @@ public class OverworldGenerator implements Generator {
 	@Override
 	public Chunk generateChunk(Vector2 chunkGridPos) {
 		// ToDo
-		Map<Vector3, Tile> tileMap = new LinkedHashMap<>();
-		for (int z = 0; z < ThreadLocalRandom.current().nextInt(1, 4); z++) {
+		Map<TilePos, Tile> tileMap = new LinkedHashMap<>();
+		for (int z = 0; z < Preferences.chunkHeight; z++) {
 			for (int y = 0; y < Preferences.chunkSize; y++) {
 				for (int x = 0; x < Preferences.chunkSize; x++) {
-					Vector3 pos = new Vector3(x, y, z);
+					TilePos pos = new TilePos(x, y, z);
 					tileMap.put(
-							pos, new Tile(pos, chunkGridPos, ThreadLocalRandom.current().nextInt(1, 3))
+							pos, new Tile(pos, chunkGridPos, ThreadLocalRandom.current().nextInt(2, 5))
 					);
 				}
 			}

@@ -10,6 +10,11 @@ import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.world.World;
 import me.adamix.colony.world.generators.OverworldGenerator;
+import me.adamix.colony.world.tile.Tile;
+
+import java.sql.SQLOutput;
+
+import static me.adamix.colony.preferences.Preferences.*;
 
 public class Game extends ApplicationAdapter {
 	public static boolean isRunning = false;
@@ -21,28 +26,37 @@ public class Game extends ApplicationAdapter {
 
 		currentWorld = new World(new OverworldGenerator(69L));
 
-		for (int y = -20; y < 20; y++) {
-			for (int x = -20; x < 20; x++) {
+		int worldScaleX = Preferences.worldSizeX / 2;
+		int worldScaleY = Preferences.worldSizeY / 2;
+
+		System.out.println("Generating world of size " + Preferences.worldSizeX + " x " + Preferences.worldSizeY + " chunks!");
+		System.out.println("Max tile count in world: " + Preferences.worldSizeX * Preferences.worldSizeY * chunkSize * chunkSize * chunkHeight);
+
+		for (int y = -worldScaleX; y < worldScaleX; y++) {
+			for (int x = -worldScaleY; x < worldScaleY; x++) {
 				currentWorld.generateChunk(new Vector2(x, y));
 			}
 		}
-
 		isRunning = true;
 	}
 
 	private void handleInput() {
 		Vector2 move = new Vector2(0, 0);
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			move.y += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			move.y -= cameraSpeed;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			move.y += (int) (1000 * Gdx.graphics.getDeltaTime());
+			move.y += cameraSpeed;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			move.x += (int) (1000 * Gdx.graphics.getDeltaTime());
+			move.x += cameraSpeed;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			move.x += (int) (-1000 * Gdx.graphics.getDeltaTime());
+			move.x -= cameraSpeed;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+			move.x *= cameraSpeedBoost;
+			move.y *= cameraSpeedBoost;
 		}
 		if (move.x != 0 && move.y != 0) {
 			move.y /= 2;
