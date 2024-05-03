@@ -1,20 +1,20 @@
 package me.adamix.colony.world.tile;
 
 import com.badlogic.gdx.Gdx;
-import me.adamix.camera.Camera;
+import me.adamix.colony.camera.Camera;
 import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.math.Vector3;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.chunk.Chunk;
 
+import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.adamix.colony.preferences.Preferences.tileSize;
 
-public class Tile {
+public class Tile implements Serializable {
 
 	private final TilePos gridPos;;
 	private final Vector2 chunkGridPos;
@@ -32,9 +32,9 @@ public class Tile {
 	}
 
 	public void render(Vector2 chunkScreenPos, Vector2 chunkSize) {
-		if (!isVisible()) {
-			return;
-		}
+//		if (!isVisible()) {
+//			return;
+//		}
 		Vector2 pos = Isometric.getTileScreenPos(this.gridPos);
 		Vector2 screenPos = new Vector2(
 				pos.x + chunkScreenPos.x + (float) chunkSize.x / 2 - (float) tileSize / 2,

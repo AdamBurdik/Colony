@@ -1,10 +1,6 @@
 package me.adamix.colony.world.entities;
 
-import com.badlogic.gdx.graphics.Texture;
-import me.adamix.camera.Camera;
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.preferences.Preferences;
-import me.adamix.colony.resources.Resources;
 
 public class Entity {
 

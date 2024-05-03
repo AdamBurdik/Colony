@@ -6,12 +6,12 @@ public class Preferences {
 
 	public static int windowWidth = 480 * 3; // pixels
 	public static int windowHeight = 270 * 3; // pixels
-	public static int worldSizeX = 100;
-	public static int worldSizeY = 100;
-	public static int worldScale = 2;
+	public static int worldSizeX = 50;
+	public static int worldSizeY = 50;
+	public static int worldScale = 3;
 	public static int tileSize = 32 * worldScale; // pixels
 	public static int chunkSize = 16; // tiles
-	public static int chunkHeight = 1;
+	public static int chunkHeight = 2;
 	public static int maxFps = 120;
 	public static String windowTitle = "Colony";
 	public static String gameVersion = "v0.1";

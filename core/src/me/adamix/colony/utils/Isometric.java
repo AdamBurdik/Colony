@@ -58,7 +58,7 @@ public class Isometric {
 	public static Vector2 getTileScreenPos(TilePos tileGridPos) {
 		return new Vector2(
 				tileGridPos.x * i_x * ((float) tileSize / 2) + tileGridPos.y * j_x * ((float) tileSize / 2),
-				(tileGridPos.x * i_y * ((float) tileSize / 2) + tileGridPos.y * j_y * ((float) tileSize / 2)) + Preferences.worldScale * tileGridPos.z
+				(tileGridPos.x * i_y * ((float) tileSize / 2) + tileGridPos.y * j_y * ((float) tileSize / 2)) - ((float) (tileSize / 2 - worldScale) * tileGridPos.z)
 		);
 	}
 

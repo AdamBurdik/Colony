@@ -1,16 +1,10 @@
 package me.adamix.colony.world;
 
-import com.badlogic.gdx.Gdx;
-import me.adamix.camera.Camera;
-import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.preferences.Preferences;
-import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.generators.Generator;
-import me.adamix.colony.world.tile.Tile;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -44,5 +38,4 @@ public class World {
 	public Chunk getChunkByScreen(Vector2 screenPosition) {
 		return null;
 	}
-
 }

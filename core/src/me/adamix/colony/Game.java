@@ -4,15 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.ScreenUtils;
-import me.adamix.camera.Camera;
+import me.adamix.colony.camera.Camera;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.world.World;
 import me.adamix.colony.world.generators.OverworldGenerator;
-import me.adamix.colony.world.tile.Tile;
-
-import java.sql.SQLOutput;
 
 import static me.adamix.colony.preferences.Preferences.*;
 
@@ -32,8 +29,8 @@ public class Game extends ApplicationAdapter {
 		System.out.println("Generating world of size " + Preferences.worldSizeX + " x " + Preferences.worldSizeY + " chunks!");
 		System.out.println("Max tile count in world: " + Preferences.worldSizeX * Preferences.worldSizeY * chunkSize * chunkSize * chunkHeight);
 
-		for (int y = -worldScaleX; y < worldScaleX; y++) {
-			for (int x = -worldScaleY; x < worldScaleY; x++) {
+		for (int y = -worldScaleX + 1; y < worldScaleX; y++) {
+			for (int x = -worldScaleY + 1; x < worldScaleY; x++) {
 				currentWorld.generateChunk(new Vector2(x, y));
 			}
 		}
