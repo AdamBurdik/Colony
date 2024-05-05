@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.useVsync(Preferences.vSync);
 		config.setForegroundFPS(Preferences.maxFps);
-		config.setTitle(Preferences.windowTitle + " " + Preferences.gameVersion);
+		config.setTitle(Preferences.windowTitle);
 		config.setWindowedMode(Preferences.windowWidth, Preferences.windowHeight);
 		new Lwjgl3Application(new Game(), config);
 	}

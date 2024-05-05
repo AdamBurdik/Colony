@@ -1,10 +1,8 @@
 package me.adamix.colony.utils;
 
-import com.badlogic.gdx.Gdx;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.math.Vector3;
 import me.adamix.colony.preferences.Preferences;
-import me.adamix.colony.world.tile.TilePos;
 
 import java.util.Map;
 
@@ -15,11 +13,12 @@ public class Isometric {
 	private static final float i_y = 0.5f;
 	private static final float j_x = -1f;
 	private static final float j_y = 0.5f;
+	private static Map<String, Float> invertedMatrix;
 
-	public static Vector2 getChunkScreenPos(Vector2 chunkGridPos) {
+	public static Vector2 getChunkScreenPos(short chunkX, short chunkY) {
 		return new Vector2(
-				chunkGridPos.x * i_x * ((float) tileSize * chunkSize / 2) + chunkGridPos.y * j_x * ((float) tileSize * chunkSize / 2),
-				chunkGridPos.x * i_y * ((float) tileSize * chunkSize / 2) + chunkGridPos.y * j_y * ((float) tileSize * chunkSize / 2)
+				chunkX * i_x * ((float) tileSize * chunkSize / 2) + chunkY * j_x * ((float) tileSize * chunkSize / 2),
+				chunkX * i_y * ((float) tileSize * chunkSize / 2) + chunkY * j_y * ((float) tileSize * chunkSize / 2)
 		);
 	}
 
@@ -41,11 +40,12 @@ public class Isometric {
 		);
 	}
 
-	public static Vector2 getChunkGridPos(Vector2 chunkScreenPos) {
-		float a = (float) (i_x * 0.5 * tileSize * chunkSize);
-		float b = (float) (j_x * 0.5 * tileSize * chunkSize);
-		float c = (float) (i_y * 0.5 * tileSize * chunkSize);
-		float d = (float) (j_y * 0.5 * tileSize * chunkSize);
+	public static Vector2 getChunkPos(Vector2 chunkScreenPos) {
+		Vector2 chunkSize = getChunkSize();
+		float a = (i_x * 0.5f * chunkSize.x);
+		float b = (j_x * 0.5f * chunkSize.x);
+		float c = (i_y * 0.5f * chunkSize.y);
+		float d = (j_y * 0.5f * chunkSize.y);
 
 		Map<String, Float> invertedMatrix = invertMatrix(a, b, c, d);
 
@@ -55,15 +55,35 @@ public class Isometric {
 		);
 	}
 
-	public static Vector2 getTileScreenPos(TilePos tileGridPos) {
+	public static Vector2 getTileScreenPos(short tileX, short tileY, short tileZ) {
 		return new Vector2(
-				tileGridPos.x * i_x * ((float) tileSize / 2) + tileGridPos.y * j_x * ((float) tileSize / 2),
-				(tileGridPos.x * i_y * ((float) tileSize / 2) + tileGridPos.y * j_y * ((float) tileSize / 2)) - ((float) (tileSize / 2 - worldScale) * tileGridPos.z)
+				tileX * i_x * ((float) tileSize / 2) + tileY * j_x * ((float) tileSize / 2),
+				(tileX * i_y * ((float) tileSize / 2) + tileY * j_y * ((float) tileSize / 2)) // - ((float) (tileSize / 2 - worldScale) * tileZ)
 		);
 	}
 
-	public static Vector3 getTileGridPos(Vector2 screenPos) {
-		return null;
+	public static void precalculateInvertedMatrix() {
+		float a = (float) (i_x * 0.5 * tileSize);
+		float b = (float) (j_x * 0.5 * tileSize);
+		float c = (float) (i_y * 0.5 * tileSize);
+		float d = (float) (j_y * 0.5 * tileSize);
+
+		invertedMatrix = invertMatrix(a, b, c, d);
+	}
+
+	public static Vector3 getTileGridPos(int screenX, int screenY) {
+		return new Vector3(
+				(int) (screenX * invertedMatrix.get("a") + screenY * invertedMatrix.get("b")),
+				(int) (screenX * invertedMatrix.get("c") + screenY * invertedMatrix.get("d")),
+				0
+		);
+	}
+
+	public static Vector2 getChunkPos(int tileX, int tileY) {
+		return new Vector2(
+				tileX / chunkSize,
+				tileY / chunkSize
+		);
 	}
 
 }

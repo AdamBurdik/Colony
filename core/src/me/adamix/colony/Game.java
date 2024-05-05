@@ -8,8 +8,10 @@ import me.adamix.colony.camera.Camera;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
+import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.World;
 import me.adamix.colony.world.generators.OverworldGenerator;
+import me.adamix.colony.world.tile.Tile;
 
 import static me.adamix.colony.preferences.Preferences.*;
 
@@ -18,23 +20,16 @@ public class Game extends ApplicationAdapter {
 	private static World currentWorld;
 	@Override
 	public void create () {
+		Isometric.precalculateInvertedMatrix();
 		Camera.create();
 		Resources.loadAllTextures();
 
 		currentWorld = new World(new OverworldGenerator(69L));
 
-		int worldScaleX = Preferences.worldSizeX / 2;
-		int worldScaleY = Preferences.worldSizeY / 2;
-
-		System.out.println("Generating world of size " + Preferences.worldSizeX + " x " + Preferences.worldSizeY + " chunks!");
-		System.out.println("Max tile count in world: " + Preferences.worldSizeX * Preferences.worldSizeY * chunkSize * chunkSize * chunkHeight);
-
-		for (int y = -worldScaleX + 1; y < worldScaleX; y++) {
-			for (int x = -worldScaleY + 1; x < worldScaleY; x++) {
-				currentWorld.generateChunk(new Vector2(x, y));
-			}
-		}
 		isRunning = true;
+//
+//		currentWorld.generateChunk(new Vector2(0, 0));
+//		currentWorld.generateChunk(new Vector2(1, 0));
 	}
 
 	private void handleInput() {
@@ -66,7 +61,7 @@ public class Game extends ApplicationAdapter {
 		handleInput();
 		Camera.update();
 		if (Preferences.showFpsInTitle) {
-			Gdx.graphics.setTitle(Preferences.windowTitle + " " + Preferences.gameVersion + "     FPS: " + Gdx.graphics.getFramesPerSecond());
+			Gdx.graphics.setTitle(Preferences.windowTitle + "     FPS: " + Gdx.graphics.getFramesPerSecond());
 		}
 	}
 

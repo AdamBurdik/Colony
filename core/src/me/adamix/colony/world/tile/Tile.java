@@ -10,53 +10,40 @@ import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.chunk.Chunk;
 
 import java.io.Serializable;
+import java.time.chrono.IsoEra;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.adamix.colony.preferences.Preferences.tileSize;
 
 public class Tile implements Serializable {
+	private final short tileX;
+	private final short tileY;
+	private final short tileZ;
+	private final short textureId;
 
-	private final TilePos gridPos;;
-	private final Vector2 chunkGridPos;
-	private int textureId;
-
-	public Tile(TilePos gridPos, Vector2 chunkGridPos, int textureId) {
-		this.gridPos = gridPos;
-		this.chunkGridPos = chunkGridPos;
+	public Tile(short tileX, short tileY, short tileZ, short textureId) {
+		this.tileX = tileX;
+		this.tileY = tileY;
+		this.tileZ = tileZ;
 		this.textureId = textureId;
 	}
+	public void render() {
 
-	private boolean isVisible() {
-		Chunk chunk = Game.getCurrentWorld().getChunkByGrid(chunkGridPos);
-		return chunk.getTileByGrid(gridPos.add(0, 0, 1)) == null || chunk.getTileByGrid(gridPos.add(1, 0, 0)) == null || chunk.getTileByGrid(gridPos.add(0, 1, 0)) == null;
-	}
-
-	public void render(Vector2 chunkScreenPos, Vector2 chunkSize) {
-//		if (!isVisible()) {
-//			return;
-//		}
-		Vector2 pos = Isometric.getTileScreenPos(this.gridPos);
-		Vector2 screenPos = new Vector2(
-				pos.x + chunkScreenPos.x + (float) chunkSize.x / 2 - (float) tileSize / 2,
-				(Gdx.graphics.getHeight() - pos.y - Preferences.tileSize) - chunkScreenPos.y
-		);
-//		if (screenPos.x > Gdx.graphics.getWidth() || screenPos.x + tileSize < 0 || screenPos.y > Gdx.graphics.getHeight() || screenPos.y + tileSize < 0) {
-//			return;
-//		}
+		Vector2 screenPos = Isometric.getTileScreenPos(tileX, tileY, tileZ);
 
 		// ToDo: Reimplement this function
 		// Make texture id to dirt if block above is solid
-		if (textureId != 0 && textureId != 1) {
-			Chunk chunk = Game.getCurrentWorld().getChunkByGrid(chunkGridPos);
-			if (chunk.getTileByGrid(gridPos.add(0, 0, 1)) != null) {
-				textureId = ThreadLocalRandom.current().nextInt(0, 2);
-			}
-		}
+//		if (textureId != 0 && textureId != 1) {
+//			Chunk chunk = Game.getCurrentWorld().getChunkByGrid(chunkGridPos);
+//			if (chunk.getTileByGrid(gridPos.add(0, 0, 1)) != null) {
+//				textureId = ThreadLocalRandom.current().nextInt(0, 2);
+//			}
+//		}
 
 		Camera.draw(
 				Resources.getTileTextures(textureId),
-				screenPos.x,
-				screenPos.y,
+				screenPos.x - (float) tileSize / 2 + Camera.offset.x,
+				Gdx.graphics.getHeight() - screenPos.y - tileSize + (float) (tileZ * tileSize) / 2 + Camera.offset.y,
 				Preferences.tileSize,
 				Preferences.tileSize
 		);

@@ -1,17 +1,14 @@
 package me.adamix.colony.world.generators;
 
 import me.adamix.colony.math.Vector2;
-import me.adamix.colony.math.Vector3;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.tile.Tile;
-import me.adamix.colony.world.tile.TilePos;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static me.adamix.colony.preferences.Preferences.chunkHeight;
+import static me.adamix.colony.preferences.Preferences.chunkSize;
 
 public class OverworldGenerator implements Generator {
 
@@ -23,19 +20,18 @@ public class OverworldGenerator implements Generator {
 
 	@Override
 	public Chunk generateChunk(Vector2 chunkGridPos) {
-		// ToDo
-		Map<TilePos, Tile> tileMap = new LinkedHashMap<>();
-		for (int z = 0; z < Preferences.chunkHeight; z++) {
-			for (int y = 0; y < Preferences.chunkSize; y++) {
-				for (int x = 0; x < Preferences.chunkSize; x++) {
-					TilePos pos = new TilePos(x, y, z);
-					tileMap.put(
-							pos, new Tile(pos, chunkGridPos, ThreadLocalRandom.current().nextInt(2, 5))
-					);
+		// ToDo Better generation
+		Tile[][][] tiles = new Tile[chunkHeight][chunkSize][chunkSize];
+		for (short z = 0; z < Preferences.chunkHeight; z++) {
+			for (short y = 0; y < chunkSize; y++) {
+				for (short x = 0; x < chunkSize; x++) {
+					int gridY = y + chunkGridPos.y * chunkSize;
+					int gridX = x + chunkGridPos.x * chunkSize;
+					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, (short) 0);
 				}
 			}
 		}
 
-		return new Chunk(chunkGridPos, tileMap);
+		return new Chunk((short) chunkGridPos.x, (short) chunkGridPos.y, tiles);
 	}
 }
