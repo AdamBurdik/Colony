@@ -12,9 +12,9 @@ import java.io.Serializable;
 import static me.adamix.colony.preferences.Preferences.tileSize;
 
 public class Tile implements Serializable {
-	private final short tileX;
-	private final short tileY;
-	private final short tileZ;
+	private short tileX;
+	private short tileY;
+	private short tileZ;
 	private final short textureId;
 
 	public Tile(short tileX, short tileY, short tileZ, short textureId) {
@@ -43,6 +43,12 @@ public class Tile implements Serializable {
 				Preferences.tileSize,
 				Preferences.tileSize
 		);
+	}
+
+	public void setPos(short tileX, short tileY, short tileZ) {
+		this.tileX = tileX;
+		this.tileY = tileY;
+		this.tileZ = tileZ;
 	}
 
 }
