@@ -11,7 +11,6 @@ import me.adamix.colony.resources.Resources;
 import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.World;
 import me.adamix.colony.world.generators.OverworldGenerator;
-import me.adamix.colony.world.tile.Tile;
 
 import static me.adamix.colony.preferences.Preferences.*;
 
@@ -33,6 +32,7 @@ public class Game extends ApplicationAdapter {
 	}
 
 	private void handleInput() {
+		// ToDo move to specific class
 		Vector2 move = new Vector2(0, 0);
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			move.y -= cameraSpeed;
@@ -54,7 +54,9 @@ public class Game extends ApplicationAdapter {
 			move.y /= 2;
 		}
 		Camera.offset.x += move.x;
-		Camera.offset.y += move.y;
+		if (Camera.offset.y + move.y >= 0) {
+			Camera.offset.y += move.y;
+		}
 	}
 
 	private void update() {

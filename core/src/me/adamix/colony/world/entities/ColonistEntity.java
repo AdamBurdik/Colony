@@ -8,7 +8,7 @@ import me.adamix.colony.world.entities.ai.PathFindingEntity;
 
 public class ColonistEntity extends PathFindingEntity {
 
-	private Vector2 animationOffset = new Vector2(0, 0);
+	private final Vector2 animationOffset = new Vector2(0, 0);
 
 	public ColonistEntity(Vector2 position, int textureId) {
 		super(position, textureId);

@@ -4,10 +4,10 @@ import me.adamix.colony.math.Vector2;
 
 public class SearchTile {
 
-	private Vector2 pos;
+	private final Vector2 pos;
 
 	private int gCost; // Distance from starting tile
-	private int hCost; // distance from end node
+	private final int hCost; // distance from end node
 	private int fCost; // gCost + hCost
 	private boolean isStart = false;
 	private Vector2 parentTilePos;

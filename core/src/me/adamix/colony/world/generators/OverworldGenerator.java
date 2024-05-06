@@ -5,17 +5,18 @@ import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.tile.Tile;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import static me.adamix.colony.preferences.Preferences.chunkHeight;
 import static me.adamix.colony.preferences.Preferences.chunkSize;
 
 public class OverworldGenerator implements Generator {
 
 	private final long seed;
+	private PerlinNoise perlinNoise;
 
 	public OverworldGenerator(long seed) {
 		this.seed = seed;
+		this.perlinNoise = new PerlinNoise();
+
 	}
 
 	@Override
@@ -27,7 +28,12 @@ public class OverworldGenerator implements Generator {
 				for (short x = 0; x < chunkSize; x++) {
 					int gridY = y + chunkGridPos.y * chunkSize;
 					int gridX = x + chunkGridPos.x * chunkSize;
-					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, (short) 0);
+					double noiseValue = perlinNoise.noise(gridX, gridY, 0);
+					short tileId = 0;
+					if (noiseValue > 0.02) {
+						tileId = 1;
+					}
+					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, tileId);
 				}
 			}
 		}

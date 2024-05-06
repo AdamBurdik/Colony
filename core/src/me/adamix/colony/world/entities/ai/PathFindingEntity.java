@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class PathFindingEntity extends Entity {
 
-	private Queue<Vector2> path = new ConcurrentLinkedQueue<>();
+	private final Queue<Vector2> path = new ConcurrentLinkedQueue<>();
 
 	public PathFindingEntity(Vector2 position, int textureId) {
 		super(position, textureId);

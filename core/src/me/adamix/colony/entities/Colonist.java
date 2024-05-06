@@ -4,8 +4,8 @@ import me.adamix.colony.math.Vector2;
 
 public class Colonist {
 
-	private int textureId = 2;
-	private Vector2 position;
+	private final int textureId = 2;
+	private final Vector2 position;
 
 	public Colonist(Vector2 position) {
 		this.position = position;

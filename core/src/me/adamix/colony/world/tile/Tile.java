@@ -2,16 +2,12 @@ package me.adamix.colony.world.tile;
 
 import com.badlogic.gdx.Gdx;
 import me.adamix.colony.camera.Camera;
-import me.adamix.colony.Game;
 import me.adamix.colony.math.Vector2;
 import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.utils.Isometric;
-import me.adamix.colony.world.chunk.Chunk;
 
 import java.io.Serializable;
-import java.time.chrono.IsoEra;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static me.adamix.colony.preferences.Preferences.tileSize;
 

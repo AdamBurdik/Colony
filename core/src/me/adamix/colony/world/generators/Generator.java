@@ -5,7 +5,7 @@ import me.adamix.colony.world.chunk.Chunk;
 
 public interface Generator {
 
-	public Chunk generateChunk(Vector2 gridPosition);
+	Chunk generateChunk(Vector2 gridPosition);
 
 
 }
