@@ -35,7 +35,7 @@ public class Game extends ApplicationAdapter {
 		currentWorld = new World(new OverworldGenerator(69L));
 
 		isRunning = true;
-		selectedTile = new Tile((short) 0, (short) 0, (short) 0, (short) 2);
+		selectedTile = new Tile((short) 0, (short) 0, (short) 0, (short) 3);
 //
 //		currentWorld.generateChunk(new Vector2(0, 0));
 //		currentWorld.generateChunk(new Vector2(1, 0));
@@ -69,7 +69,6 @@ public class Game extends ApplicationAdapter {
 		}
 		Vector3 selectedTilePos = Isometric.getTileGridPos(Gdx.input.getX() - Camera.offset.x, Gdx.input.getY() + Camera.offset.y);
 		selectedTile.setPos((short) selectedTilePos.x, (short) selectedTilePos.y, (short) 0);
-		System.out.println(selectedTilePos);
 	}
 
 	private void update() {

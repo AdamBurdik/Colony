@@ -29,11 +29,30 @@ public class OverworldGenerator implements Generator {
 					int gridY = y + chunkGridPos.y * chunkSize;
 					int gridX = x + chunkGridPos.x * chunkSize;
 					double noiseValue = perlinNoise.noise(gridX, gridY, 0);
-					short tileId = 0;
+					short tileId = 5;
 					if (noiseValue > 0.02) {
 						tileId = 1;
 					}
 					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, tileId);
+				}
+			}
+		}
+
+		for (short z = 0; z < Preferences.chunkHeight; z++) {
+			for (short y = 0; y < chunkSize; y++) {
+				for (short x = 0; x < chunkSize; x++) {
+					if (z != 0) {
+						continue;
+					}
+
+					Tile tile = tiles[z][y][x];
+					Tile tileAbove = tiles[z + 1][y][x];
+					if (tileAbove.getTextureId() == 1) {
+						tile.setTextureId((short) 0);
+						tile.setRender(false);
+					} else if (tileAbove.getTextureId() == 5) {
+						tile.setTextureId((short) 2);
+					}
 				}
 			}
 		}

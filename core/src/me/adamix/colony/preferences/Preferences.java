@@ -9,7 +9,7 @@ public class Preferences {
 	public static int worldScale = 2;
 	public static int tileSize = 32 * worldScale; // pixels
 	public static int chunkSize = 16; // tiles
-	public static int chunkHeight = 1;
+	public static int chunkHeight = 2;
 	public static int renderDistance = 2;
 	public static int maxFps = 120;
 	public static String windowTitle = "Colony";

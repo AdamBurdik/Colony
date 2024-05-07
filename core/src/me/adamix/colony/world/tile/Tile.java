@@ -15,7 +15,8 @@ public class Tile implements Serializable {
 	private short tileX;
 	private short tileY;
 	private short tileZ;
-	private final short textureId;
+	private short textureId;
+	private boolean render = true;
 
 	public Tile(short tileX, short tileY, short tileZ, short textureId) {
 		this.tileX = tileX;
@@ -24,6 +25,9 @@ public class Tile implements Serializable {
 		this.textureId = textureId;
 	}
 	public void render() {
+		if (!this.render) {
+			return;
+		}
 
 		Vector2 screenPos = Isometric.getTileScreenPos(tileX, tileY, tileZ);
 
@@ -49,6 +53,18 @@ public class Tile implements Serializable {
 		this.tileX = tileX;
 		this.tileY = tileY;
 		this.tileZ = tileZ;
+	}
+
+	public short getTextureId() {
+		return textureId;
+	}
+
+	public void setTextureId(short textureId) {
+		this.textureId = textureId;
+	}
+
+	public void setRender(boolean render) {
+		this.render = render;
 	}
 
 }
