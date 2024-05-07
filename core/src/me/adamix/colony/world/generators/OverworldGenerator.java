@@ -30,7 +30,10 @@ public class OverworldGenerator implements Generator {
 					int gridX = x + chunkGridPos.x * chunkSize;
 					double noiseValue = perlinNoise.noise(gridX, gridY, 0);
 					short tileId = 5;
-					if (noiseValue > 0.02) {
+					if (noiseValue > 0.09 - 0.15) {
+						tileId = 2;
+					}
+					if (noiseValue > 0.3 - 0.2) {
 						tileId = 1;
 					}
 					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, tileId);
