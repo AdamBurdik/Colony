@@ -8,6 +8,7 @@ import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.generators.Generator;
+import me.adamix.colony.world.tile.Tile;
 
 import java.util.LinkedList;
 

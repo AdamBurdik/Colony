@@ -7,7 +7,7 @@ import me.adamix.colony.math.Vector2;
 
 public class Camera {
 
-	public static final Vector2 offset = new Vector2(5000, 5000);
+	public static final Vector2 offset = new Vector2(50000, 50000);
 
 	public static void create() {
 	}

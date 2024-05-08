@@ -1,0 +1,5 @@
+{
+	"name": "Sand Tile",
+	"id": "colony:sand_tile",
+	"texture": "tiles/sand_tile.png"
+}

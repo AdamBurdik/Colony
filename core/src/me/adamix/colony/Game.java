@@ -12,6 +12,7 @@ import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.resources.Resources;
 import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.World;
+import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.generators.OverworldGenerator;
 import me.adamix.colony.world.tile.Tile;
 
@@ -30,20 +31,38 @@ public class Game extends ApplicationAdapter {
 
 		Isometric.precalculateInvertedMatrix();
 		Camera.create();
-		Resources.loadAllTextures();
+		Resources.loadAll();
 
 		currentWorld = new World(new OverworldGenerator(69L));
 
 		isRunning = true;
-		selectedTile = new Tile((short) 0, (short) 0, (short) 0, (short) 3);
+		selectedTile = new Tile((short) 0, (short) 0, (short) 0, "colony:selected_tile");
 //
 //		currentWorld.generateChunk(new Vector2(0, 0));
 //		currentWorld.generateChunk(new Vector2(1, 0));
 	}
 
+	private void placeTile(short tileId) {
+
+	}
+
+	private void removeTile() {
+		Chunk chunk = currentWorld.getChunk(selectedTile.getX(), selectedTile.getY());
+		System.out.println(selectedTile.getZ());
+		chunk.removeTile(selectedTile.getX(), selectedTile.getY(), (short) (selectedTile.getZ()));
+	}
+
 	private void handleInput() {
 		// ToDo move to specific class
 		Vector2 move = new Vector2(0, 0);
+		if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+			placeTile((short) 0);
+		}
+		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+			removeTile();
+		}
+
+
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			move.y -= cameraSpeed;
 		}
@@ -68,7 +87,7 @@ public class Game extends ApplicationAdapter {
 			Camera.offset.y += move.y;
 		}
 		Vector3 selectedTilePos = Isometric.getTileGridPos(Gdx.input.getX() - Camera.offset.x, Gdx.input.getY() + Camera.offset.y);
-		selectedTile.setPos((short) selectedTilePos.x, (short) selectedTilePos.y, (short) 0);
+		selectedTile.setPos((short) selectedTilePos.x, (short) selectedTilePos.y, (short) 1);
 	}
 
 	private void update() {

@@ -5,8 +5,9 @@ import me.adamix.colony.preferences.Preferences;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.tile.Tile;
 
-import static me.adamix.colony.preferences.Preferences.chunkHeight;
-import static me.adamix.colony.preferences.Preferences.chunkSize;
+import java.util.Objects;
+
+import static me.adamix.colony.preferences.Preferences.*;
 
 public class OverworldGenerator implements Generator {
 
@@ -22,19 +23,23 @@ public class OverworldGenerator implements Generator {
 	@Override
 	public Chunk generateChunk(Vector2 chunkGridPos) {
 		// ToDo Better generation
-		Tile[][][] tiles = new Tile[chunkHeight][chunkSize][chunkSize];
-		for (short z = 0; z < Preferences.chunkHeight; z++) {
+		Tile[][][] tiles = new Tile[chunkMaxHeight][chunkSize][chunkSize];
+		for (short z = 0; z < Preferences.chunkMaxHeight; z++) {
 			for (short y = 0; y < chunkSize; y++) {
 				for (short x = 0; x < chunkSize; x++) {
+					if (z >= chunkHeight) {
+						tiles[z][y][x] = null;
+						continue;
+					}
 					int gridY = y + chunkGridPos.y * chunkSize;
 					int gridX = x + chunkGridPos.x * chunkSize;
 					double noiseValue = perlinNoise.noise(gridX, gridY, 0);
-					short tileId = 5;
+					String tileId = "colony:water_top_tile";
 					if (noiseValue > 0.09 - 0.15) {
-						tileId = 2;
+						tileId = "colony:sand_tile";
 					}
 					if (noiseValue > 0.3 - 0.2) {
-						tileId = 1;
+						tileId = "colony:grass_tile";
 					}
 					tiles[z][y][x] = new Tile((short) gridX, (short) gridY, z, tileId);
 				}
@@ -50,11 +55,14 @@ public class OverworldGenerator implements Generator {
 
 					Tile tile = tiles[z][y][x];
 					Tile tileAbove = tiles[z + 1][y][x];
-					if (tileAbove.getTextureId() == 1) {
-						tile.setTextureId((short) 0);
+					if (tileAbove == null) {
+						continue;
+					}
+					if (Objects.equals(tileAbove.getTextureId(), "colony:grass_tile")) {
+						tile.setTextureId("colony:dirt_tile");
 						tile.setRender(false);
-					} else if (tileAbove.getTextureId() == 5) {
-						tile.setTextureId((short) 2);
+					} else if (tileAbove.getTextureId().equals("colony:water_top_tile")) {
+						tile.setTextureId("colony:sand_tile");
 					}
 				}
 			}

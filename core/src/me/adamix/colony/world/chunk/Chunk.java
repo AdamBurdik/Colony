@@ -4,6 +4,8 @@ import me.adamix.colony.world.tile.Tile;
 
 import java.io.Serializable;
 
+import static me.adamix.colony.preferences.Preferences.chunkSize;
+
 public class Chunk implements Serializable {
 
 	private final Tile[][][] tiles;
@@ -28,10 +30,20 @@ public class Chunk implements Serializable {
 		for (Tile[][] layer : tiles) {
 			for (Tile[] column : layer) {
 				for (Tile tile : column) {
+					if (tile == null) {
+						continue;
+					}
 					tile.render();
 				}
 			}
 		}
+	}
+
+	public void removeTile(short x, short y, short z) {
+		int tileX = x - (x / chunkSize) * chunkSize;
+		int tileY = y - (y / chunkSize) * chunkSize;
+
+		tiles[z][tileY][tileX] = null;
 	}
 
 	public Tile getTile(int x, int y, int z) {

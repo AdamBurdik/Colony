@@ -1,0 +1,5 @@
+{
+	"name": "Selected Tile",
+	"id": "colony:selected_tile",
+	"texture": "tiles/selected_tile.png"
+}

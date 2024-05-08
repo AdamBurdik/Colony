@@ -15,10 +15,10 @@ public class Tile implements Serializable {
 	private short tileX;
 	private short tileY;
 	private short tileZ;
-	private short textureId;
+	private String textureId;
 	private boolean render = true;
 
-	public Tile(short tileX, short tileY, short tileZ, short textureId) {
+	public Tile(short tileX, short tileY, short tileZ, String textureId) {
 		this.tileX = tileX;
 		this.tileY = tileY;
 		this.tileZ = tileZ;
@@ -55,16 +55,28 @@ public class Tile implements Serializable {
 		this.tileZ = tileZ;
 	}
 
-	public short getTextureId() {
+	public String getTextureId() {
 		return textureId;
 	}
 
-	public void setTextureId(short textureId) {
+	public void setTextureId(String textureId) {
 		this.textureId = textureId;
 	}
 
 	public void setRender(boolean render) {
 		this.render = render;
+	}
+
+	public short getX() {
+		return tileX;
+	}
+
+	public short getY() {
+		return tileY;
+	}
+
+	public short getZ() {
+		return tileZ;
 	}
 
 }
