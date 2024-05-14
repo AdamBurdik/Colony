@@ -14,14 +14,12 @@ import static me.adamix.colony.preferences.Preferences.tileSize;
 public class Tile implements Serializable {
 	private short tileX;
 	private short tileY;
-	private short tileZ;
 	private String textureId;
 	private boolean render = true;
 
-	public Tile(short tileX, short tileY, short tileZ, String textureId) {
+	public Tile(short tileX, short tileY, String textureId) {
 		this.tileX = tileX;
 		this.tileY = tileY;
-		this.tileZ = tileZ;
 		this.textureId = textureId;
 	}
 	public void render() {
@@ -29,7 +27,7 @@ public class Tile implements Serializable {
 			return;
 		}
 
-		Vector2 screenPos = Isometric.getTileScreenPos(tileX, tileY, tileZ);
+		Vector2 screenPos = Isometric.getTileScreenPos(tileX, tileY);
 
 		// ToDo: Reimplement this function
 		// Make texture id to dirt if block above is solid
@@ -43,16 +41,15 @@ public class Tile implements Serializable {
 		Camera.draw(
 				Resources.getTileTextures(textureId),
 				screenPos.x - (float) tileSize / 2 + Camera.offset.x,
-				Gdx.graphics.getHeight() - screenPos.y - tileSize + (float) (tileZ * tileSize) / 2 + Camera.offset.y,
+				Gdx.graphics.getHeight() - screenPos.y - tileSize + Camera.offset.y,
 				Preferences.tileSize,
 				Preferences.tileSize
 		);
 	}
 
-	public void setPos(short tileX, short tileY, short tileZ) {
+	public void setPos(short tileX, short tileY) {
 		this.tileX = tileX;
 		this.tileY = tileY;
-		this.tileZ = tileZ;
 	}
 
 	public String getTextureId() {
@@ -73,10 +70,6 @@ public class Tile implements Serializable {
 
 	public short getY() {
 		return tileY;
-	}
-
-	public short getZ() {
-		return tileZ;
 	}
 
 }

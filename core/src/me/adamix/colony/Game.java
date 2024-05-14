@@ -2,6 +2,7 @@ package me.adamix.colony;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -14,6 +15,7 @@ import me.adamix.colony.utils.Isometric;
 import me.adamix.colony.world.World;
 import me.adamix.colony.world.chunk.Chunk;
 import me.adamix.colony.world.generators.OverworldGenerator;
+import me.adamix.colony.world.generators.PerlinNoise;
 import me.adamix.colony.world.tile.Tile;
 
 import static me.adamix.colony.preferences.Preferences.*;
@@ -29,14 +31,14 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 
-		Isometric.precalculateInvertedMatrix();
+		Isometric.precalculateAll();
 		Camera.create();
 		Resources.loadAll();
 
 		currentWorld = new World(new OverworldGenerator(69L));
 
 		isRunning = true;
-		selectedTile = new Tile((short) 0, (short) 0, (short) 0, "colony:selected_tile");
+		selectedTile = new Tile((short) 0, (short) 0, "colony:selected_tile");
 //
 //		currentWorld.generateChunk(new Vector2(0, 0));
 //		currentWorld.generateChunk(new Vector2(1, 0));
@@ -48,8 +50,7 @@ public class Game extends ApplicationAdapter {
 
 	private void removeTile() {
 		Chunk chunk = currentWorld.getChunk(selectedTile.getX(), selectedTile.getY());
-		System.out.println(selectedTile.getZ());
-		chunk.removeTile(selectedTile.getX(), selectedTile.getY(), (short) (selectedTile.getZ()));
+		chunk.removeTile(selectedTile.getX(), selectedTile.getY());
 	}
 
 	private void handleInput() {
@@ -58,7 +59,7 @@ public class Game extends ApplicationAdapter {
 		if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 			placeTile((short) 0);
 		}
-		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			removeTile();
 		}
 
@@ -79,6 +80,14 @@ public class Game extends ApplicationAdapter {
 			move.x *= cameraSpeedBoost;
 			move.y *= cameraSpeedBoost;
 		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.F11)){
+			boolean fullScreen = Gdx.graphics.isFullscreen();
+			Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+			if (fullScreen)
+				Gdx.graphics.setWindowedMode(windowWidth, windowHeight);
+			else
+				Gdx.graphics.setFullscreenMode(currentMode);
+		}
 		if (move.x != 0 && move.y != 0) {
 			move.y /= 2;
 		}
@@ -87,7 +96,8 @@ public class Game extends ApplicationAdapter {
 			Camera.offset.y += move.y;
 		}
 		Vector3 selectedTilePos = Isometric.getTileGridPos(Gdx.input.getX() - Camera.offset.x, Gdx.input.getY() + Camera.offset.y);
-		selectedTile.setPos((short) selectedTilePos.x, (short) selectedTilePos.y, (short) 1);
+		selectedTile.setPos((short) selectedTilePos.x, (short) selectedTilePos.y);
+		selectedTile.setRender(selectedTilePos.x >= 0 && selectedTilePos.y >= 0);
 	}
 
 	private void update() {
@@ -100,9 +110,9 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		batch.begin();
 		update();
-		ScreenUtils.clear(1, 1, 1, 1);
+		batch.begin();
+		ScreenUtils.clear((float) 41 / 255, (float) 40 / 255, (float) 49 / 255, (float) 0 / 255);
 		Camera.render();
 		selectedTile.render();
 		batch.end();
