@@ -2,8 +2,14 @@ package me.adamix.colony.world.generators;
 
 import java.util.Random;
 
-// Author: https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d
-
+/**
+ * Perlin noise generation using the same method that
+ * <a href="https://github.com/warmwaffles/noisy/blob/master/lib/noisy/noisy.rb">Noisy</a>
+ * uses.
+ *
+ * @author WarmWaffles (Matthew Johnston)
+ *
+ */
 public class PerlinNoise {
 	private double seed;
 	private long default_size;
@@ -43,7 +49,7 @@ public class PerlinNoise {
 				84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236,
 				205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66,
 				215, 61, 156, 180 };
-		this.default_size = 35;
+		this.default_size = 50;
 
 		// Populate it
 		for (int i = 0; i < 256; i++) {

@@ -1,0 +1,5 @@
+{
+	"name": "Water Tile",
+	"id": "colony:water_tile",
+	"texture": "tiles/water_tile.png"
+}
